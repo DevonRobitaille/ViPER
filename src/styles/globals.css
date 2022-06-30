@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn {
+        @apply bg-[#FF0066] border-[#A0A0A0] border w-full mx-auto px-2 py-1 text-white text-base font-normal font-['Open_Sans'] hover:bg-[#f7498e]
+    }
+
+    .inputField {
+        @apply flex-1 outline-none bg-transparent pl-4
+    }
+
+    .inputDiv {
+        @apply flex flex-1 items-center bg-white border border-[#A0A0A0]
+    }
+
+    .pwd-icon {
+        @apply h-7 cursor-pointer rounded-sm lg:p-1 lg:hover:bg-gray-100
+    }
+
+    .NavButtons {
+        @apply items-center space-x-1 text-sm font-semibold p-2 hover:bg-gray-100 cursor-pointer rounded-sm hidden md:flex
+    }
+}
+
