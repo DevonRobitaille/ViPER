@@ -9,7 +9,8 @@
 
 import { createRouter } from "../createRouter";
 import { userRouter } from "./user.router";
+import { companyRouter } from "./company.router";
 
-export const appRouter = createRouter().merge('users.', userRouter)
+export const appRouter = createRouter().merge('users.', userRouter).merge('company.', companyRouter)
 
 export type AppRouter = typeof appRouter

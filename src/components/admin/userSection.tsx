@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { trpc } from "../../utils/trpc"
 import dynamic from "next/dynamic"
+import { CreateUserInput } from '../../schema/user.schema';
+
 
 const AddUserModal = dynamic(() => import('../modal/addUserModal'), {
     ssr: false
@@ -16,7 +18,7 @@ function UserSection() {
     // User Section
     const [addUserModalIsOpen, setAddUserModalIsOpen] = useState(false);
     const [editUserModalIsOpen, setEditUserModalIsOpen] = useState(false);
-    const [editUserDetails, setEditUserDetails] = useState({
+    const [editUserDetails, setEditUserDetails] = useState<CreateUserInput>({
         firstName: "",
         lastName: "",
         email: ""

@@ -2,11 +2,12 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import * as trpc from '@trpc/server'
 import {
     createCompanySchema,
-    updateCompanySchema
+    updateCompanySchema,
+    companyListOutputSchema
 } from '../../schema/company.schema'
 import { createRouter } from '../createRouter'
 
-export const userRouter = createRouter()
+export const companyRouter = createRouter()
     .mutation('create-company', {
         input: createCompanySchema,
         async resolve({ ctx, input }) {
@@ -57,7 +58,7 @@ export const userRouter = createRouter()
     .mutation('update-company', {
         input: updateCompanySchema,
         async resolve({ ctx, input }) {
-            const { name, contact } = input
+            const { newName, prevName, contact } = input
 
             // User has to be signed in
             if (!ctx.user) {
@@ -78,10 +79,10 @@ export const userRouter = createRouter()
             try {
                 const company = await ctx.prisma.company.update({
                     where: {
-                        name
+                        name: prevName
                     },
                     data: {
-                        name,
+                        name: newName,
                         contact
                     }
                 })
@@ -103,4 +104,28 @@ export const userRouter = createRouter()
                 })
             }
         },
+    })
+    .query('all', {
+        output: companyListOutputSchema,
+        async resolve({ ctx }) {
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            // only admin can change profile details
+            if (ctx.user.role !== 'Admin') {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            const companyList = await ctx.prisma.company.findMany()
+
+            return companyList
+        }
     })
