@@ -8,6 +8,7 @@ import { url } from '../constants'
 import { AppRouter } from '../server/route/app.router'
 import { trpc } from '../utils/trpc'
 import { UserContextProvider } from '../context/user.context'
+import NavBar from '../components/navBar'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { data, error, isLoading } = trpc.useQuery(['users.me'])
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <UserContextProvider value={data}>
+      {data && data.role && <NavBar />}
       <Component {...pageProps} />
     </UserContextProvider>
   )

@@ -255,6 +255,10 @@ export const userRouter = createRouter()
 
             ctx.res.setHeader('Set-Cookie', serialize('token', jwt, { path: '/' }))
 
+            if (token.user.role.name === 'Admin') return {
+                redirect: '/admin',
+            }
+
             return {
                 redirect: token.redirect,
             }
