@@ -10,8 +10,8 @@ interface IProps {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const AddUserModal: NextPage<IProps> = (props) => {
-    // Add User Modal
+const AddCompanyModal: NextPage<IProps> = (props) => {
+    // Add Company Modal
     const { isOpen, setIsOpen } = props
     const { handleSubmit, register, reset } = useForm<CreateCompanyInput>()
     const { mutate, error } = trpc.useMutation(['company.create-company'], {
@@ -62,4 +62,4 @@ const AddUserModal: NextPage<IProps> = (props) => {
     )
 }
 
-export default AddUserModal
+export default AddCompanyModal

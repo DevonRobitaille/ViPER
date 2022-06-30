@@ -10,6 +10,10 @@ const CompanySection = dynamic(() => import('../components/admin/companySection'
     ssr: false
 })
 
+const JobSection = dynamic(() => import('../components/admin/jobSection'), {
+    ssr: false
+})
+
 export function AdminPage() {
     const user = useUserContext()
     const router = useRouter()
@@ -25,25 +29,7 @@ export function AdminPage() {
                 <CompanySection />
 
                 {/* Job Title Section */}
-                <section className='flex-col'>
-                    <button className='btn w-40 mb-4'>Add Job Title</button>
-                    <div className='border-2 b-[#A0A0A0] overflow-auto'>
-                        {/*jobTitleList.map((jobTitle, index) => {
-                            return (
-                                <div key={`jobTitle-${index}`} className='flex flex-col'>
-                                    <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
-                                        <div className='flex-1'>
-                                            <p className='text-sm'>Job title</p>
-                                        </div>
-                                        <button className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'> Edit</button>
-                                        <button className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
-                                    </div>
-                                    <hr className='h-0.5 bg-[#DDD] m-2' />
-                                </div>
-                            )
-                        })*/}
-                    </div>
-                </section>
+                <JobSection />
 
                 {/* Vendor Section */}
                 <section className='flex-col'>

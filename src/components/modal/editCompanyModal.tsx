@@ -12,8 +12,8 @@ interface IProps {
     contactPlaceholder?: string | null;
 }
 
-const EditUserModal: NextPage<IProps> = (props) => {
-    // Add User Modal
+const EditCompanyModal: NextPage<IProps> = (props) => {
+    // Edit Company Modal
     const { isOpen, setIsOpen, namePlaceholder, contactPlaceholder } = props
     const { handleSubmit, register, reset } = useForm<UpdateCompanyInput>()
     const { mutate, error } = trpc.useMutation(['company.update-company'], {
@@ -66,4 +66,4 @@ const EditUserModal: NextPage<IProps> = (props) => {
     )
 }
 
-export default EditUserModal
+export default EditCompanyModal

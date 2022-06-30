@@ -61,10 +61,9 @@ model Company {
 
 // Job Title
 model Job {
-  id      String   @unique @default(uuid())
-  name    String   @unique
-  contact String?
-  Vendor  Vendor[]
+  id     String   @unique @default(uuid())
+  name   String   @unique
+  Vendor Vendor[]
 }
 
 // Vendor?
@@ -73,6 +72,7 @@ model Vendor {
   firstName String
   lastName  String
   email     String?
+  contact   String?
 
   company   Company @relation(fields: [companyId], references: [id])
   companyId String
