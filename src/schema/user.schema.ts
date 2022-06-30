@@ -56,7 +56,11 @@ export const userListOutputSchema = z.object({
     lastName: z.string(),
     email: z.string(),
     emailVerified: z.date(),
-    isActive: z.boolean()
+    isActive: z.boolean(),
+    role: z.object({
+        name: z.string(),
+        value: z.number()
+    })
 }).array()
 export type UserListOutput = z.TypeOf<typeof userListOutputSchema>
 

@@ -450,7 +450,11 @@ export const userRouter = createRouter()
             }
 
             // We have verified that the logged in user is an admin which means they can see all users
-            const users = await ctx.prisma.user.findMany()
+            const users = await ctx.prisma.user.findMany({
+                include: {
+                    role: true
+                }
+            })
             return users
         }
     })

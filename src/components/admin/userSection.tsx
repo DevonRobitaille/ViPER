@@ -49,7 +49,7 @@ function UserSection() {
                                 <div key={`user-${index}`} className='flex flex-col'>
                                     <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
                                         <div className='flex-1'>
-                                            <p className='text-sm'>{user.firstName + " " + user.lastName}</p>
+                                            <p className='text-sm'>{user.firstName + " " + user.lastName}<span className="text-[#FF0066]">{(user.role.name === 'Admin' ? "  (Admin)" : "")}</span></p>
                                             <p className='text-xs'>{user.email}</p>
                                         </div>
                                         <button onClick={() => {
