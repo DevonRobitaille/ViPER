@@ -57,7 +57,7 @@ function VendorSection() {
                                     <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
                                         <div className='flex-1'>
                                             <p className='text-sm'>{vendor.firstName + " " + vendor.lastName}</p>
-                                            <p className='text-xs'>{vendor.company.name + " - " + vendor.job.name}</p>
+                                            <p className='text-xs'>{vendor.company.name + " - " + vendor.job.name}<span>{(vendor.email) ? " - " + vendor.email : " - " + "Contact Not Found"}</span></p>
                                         </div>
                                         <button onClick={() => {
                                             setEditVendorDetails((prev) => prev = { ...prev, id: vendor.id, firstName: vendor.firstName, lastName: vendor.lastName, email: vendor.email, companyId: vendor.company.id, jobId: vendor.job.id })
