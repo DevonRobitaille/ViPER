@@ -108,6 +108,22 @@ export const userRouter = createRouter()
         async resolve({ ctx, input }) {
             const { email, firstName, lastName } = input
 
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            // only admin can change profile details
+            if (ctx.user.role !== 'Admin') {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
             try {
                 // retrieve id of admin role
                 let userRole = await ctx.prisma.role.findFirst({
