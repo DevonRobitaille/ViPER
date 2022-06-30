@@ -58,9 +58,10 @@ ___
 - [x] tRPC: request-otp
 - [x] tRPC: verify-otp
 - [x] page: login (page crashes when verifying otp)
-- [] page: navbar
-- [] page: admin
-- [] page: reports (all from everyone)
-- [] page: new report
-- [] page: reports (created by logged in user)
-- [] page: account (password, name, and email change)
+- [ ] Script: create a script to populate db with default values (i.e. roles)
+- [ ] page: navbar
+- [ ] page: admin
+- [ ] page: reports (all from everyone)
+- [ ] page: new report
+- [ ] page: reports (created by logged in user)
+- [ ] page: account (password, name, and email change)
