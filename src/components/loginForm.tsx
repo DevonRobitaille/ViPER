@@ -55,8 +55,7 @@ function LoginForm() {
                 <h2 className='text-3xl font-semibold' > ViPER </h2>
                 < h3 className='text-xl font-semibold m-5' > Login </h3>
 
-                < p className='text-red-500 text-center font-semibold text-lg' > {error && error.message
-                } </p>
+                < p className='text-red-500 text-center font-semibold text-lg' > {error && error.message} </p>
 
                 {/* form */}
                 <form onSubmit={handleSubmit(onSubmit)} className='mx-auto flex flex-col content-center justify-center items-center gap-2' >

@@ -1,6 +1,22 @@
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { useUserContext } from "../context/user.context"
-import { trpc } from "../utils/trpc"
+
+const UserSection = dynamic(() => import('../components/admin/userSection'), {
+    ssr: false
+})
+
+const CompanySection = dynamic(() => import('../components/admin/companySection'), {
+    ssr: false
+})
+
+const JobSection = dynamic(() => import('../components/admin/jobSection'), {
+    ssr: false
+})
+
+const VendorSection = dynamic(() => import('../components/admin/vendorSection'), {
+    ssr: false
+})
 
 export function AdminPage() {
     const user = useUserContext()
@@ -8,97 +24,19 @@ export function AdminPage() {
 
     if (user?.role !== 'Admin') router.push('/')
     else {
-        const { data: userData, isLoading } = trpc.useQuery(['users.all'])
-
         return (
             <div className='grid mt-10 grid-cols-1 gap-8 mx-20 md:grid-cols-2'>
                 {/* Users Section */}
-                <section className='flex-col'>
-                    <button className='btn w-40 mb-4'>Add User</button>
-                    <div className='border-2 b-[#A0A0A0] overflow-auto'>
-                        {isLoading && <div>Loading...</div>}
-                        {!isLoading && userData &&
-                            userData.map((user, index) => {
-                                return (
-                                    <div key={`user-${index}`} className='flex flex-col'>
-                                        <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
-                                            <div className='flex-1'>
-                                                <p className='text-sm'>{user.firstName + " " + user.lastName}</p>
-                                                <p className='text-xs'>{user.email}</p>
-                                            </div>
-                                            <button onClick={() => { }} className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'>Edit</button>
-                                            <button onClick={() => { }} className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
-                                        </div>
-                                        <hr className='h-0.5 bg-[#DDD] m-2' />
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </section>
+                <UserSection />
 
                 {/* Company Section */}
-                <section className='flex-col'>
-                    <button className='btn w-40 mb-4'>Add Company</button>
-                    <div className='border-2 b-[#A0A0A0] overflow-auto'>
-                        {/*companyList.map((company, index) => {
-                            return (
-                                <div key={`company-${index}`} className='flex flex-col'>
-                                    <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
-                                        <div className='flex-1'>
-                                            <p className='text-sm'>Company</p>
-                                        </div>
-                                        <button className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'> Edit</button>
-                                        <button className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
-                                    </div>
-                                    <hr className='h-0.5 bg-[#DDD] m-2' />
-                                </div>
-                            )
-                        })*/}
-                    </div>
-                </section>
+                <CompanySection />
 
                 {/* Job Title Section */}
-                <section className='flex-col'>
-                    <button className='btn w-40 mb-4'>Add Job Title</button>
-                    <div className='border-2 b-[#A0A0A0] overflow-auto'>
-                        {/*jobTitleList.map((jobTitle, index) => {
-                            return (
-                                <div key={`jobTitle-${index}`} className='flex flex-col'>
-                                    <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
-                                        <div className='flex-1'>
-                                            <p className='text-sm'>Job title</p>
-                                        </div>
-                                        <button className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'> Edit</button>
-                                        <button className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
-                                    </div>
-                                    <hr className='h-0.5 bg-[#DDD] m-2' />
-                                </div>
-                            )
-                        })*/}
-                    </div>
-                </section>
+                <JobSection />
 
                 {/* Vendor Section */}
-                <section className='flex-col'>
-                    <button className='btn w-40 mb-4'>Add Vendor</button>
-                    <div className='border-2 b-[#A0A0A0] overflow-auto'>
-                        {/*jobTitleList.map((jobTitle, index) => {
-                            return (
-                                <div key={`jobTitle-${index}`} className='flex flex-col'>
-                                    <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
-                                        <div className='flex-1'>
-                                            <p className='text-sm'>Job title</p>
-                                        </div>
-                                        <button className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'> Edit</button>
-                                        <button className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
-                                    </div>
-                                    <hr className='h-0.5 bg-[#DDD] m-2' />
-                                </div>
-                            )
-                        })*/}
-                    </div>
-                </section>
+                <VendorSection />
 
                 {/* Reports Section */}
                 <section className='flex-col mb-4 md:mb-0'>

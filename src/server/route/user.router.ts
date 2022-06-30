@@ -1,13 +1,15 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import * as trpc from '@trpc/server'
 import { serialize } from 'cookie'
+import { z } from 'zod'
 import { baseUrl, url } from '../../constants'
 import {
     createUserSchema,
     requestOtpSchema,
     verifyOtpSchema,
     verifyEmailSchema,
-    userListOutputSchema
+    userListOutputSchema,
+    updateUserSchema
 } from '../../schema/user.schema'
 import { decode, encode } from '../../utils/base64'
 import { signJwt } from '../../utils/jwt'
@@ -44,9 +46,9 @@ export const userRouter = createRouter()
 
                 const user = await ctx.prisma.user.create({
                     data: {
-                        email,
-                        firstName,
-                        lastName,
+                        email: email.trim(),
+                        firstName: firstName.trim(),
+                        lastName: lastName.trim(),
                         roleId: adminRole.id,
                         isActive: true
                     },
@@ -106,6 +108,22 @@ export const userRouter = createRouter()
         async resolve({ ctx, input }) {
             const { email, firstName, lastName } = input
 
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            // only admin can change profile details
+            if (ctx.user.role !== 'Admin') {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
             try {
                 // retrieve id of admin role
                 let userRole = await ctx.prisma.role.findFirst({
@@ -121,9 +139,9 @@ export const userRouter = createRouter()
 
                 const user = await ctx.prisma.user.create({
                     data: {
-                        email,
-                        firstName,
-                        lastName,
+                        email: email.trim(),
+                        firstName: firstName.trim(),
+                        lastName: lastName.trim(),
                         roleId: userRole.id,
                         isActive: true
                     },
@@ -208,6 +226,108 @@ export const userRouter = createRouter()
             })
 
             return true
+        }
+    })
+    .mutation('update-user', {
+        input: updateUserSchema,
+        async resolve({ ctx, input }) {
+            const { firstName, lastName, newEmail, prevEmail } = input
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            // only admin can change profile details
+            if (ctx.user.role !== 'Admin') {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            try {
+                const user = await ctx.prisma.user.update({
+                    where: {
+                        email: prevEmail
+                    },
+                    data: {
+                        firstName,
+                        lastName,
+                        email: newEmail
+                    }
+                })
+
+                return true
+            } catch (e) {
+                if (e instanceof PrismaClientKnownRequestError) {
+                    if (e.code === 'P2002') {
+                        throw new trpc.TRPCError({
+                            code: 'CONFLICT',
+                            message: 'User already exists',
+                        })
+                    }
+                }
+
+                throw new trpc.TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong',
+                })
+            }
+        }
+    })
+    .mutation('disable-user', {
+        input: z.object({
+            email: z.string().email(),
+            toggle: z.boolean()
+        }),
+        async resolve({ ctx, input }) {
+            const { email, toggle } = input
+
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            // only admin can change profile details
+            if (ctx.user.role !== 'Admin') {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            try {
+                const user = await ctx.prisma.user.update({
+                    where: {
+                        email
+                    },
+                    data: {
+                        isActive: toggle
+                    }
+                })
+
+                return true
+            } catch (e) {
+                if (e instanceof PrismaClientKnownRequestError) {
+                    if (e.code === 'P2002') {
+                        throw new trpc.TRPCError({
+                            code: 'CONFLICT',
+                            message: 'User already exists',
+                        })
+                    }
+                }
+
+                throw new trpc.TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong',
+                })
+            }
         }
     })
     .query('verify-otp', {
@@ -330,7 +450,11 @@ export const userRouter = createRouter()
             }
 
             // We have verified that the logged in user is an admin which means they can see all users
-            const users = await ctx.prisma.user.findMany()
+            const users = await ctx.prisma.user.findMany({
+                include: {
+                    role: true
+                }
+            })
             return users
         }
     })

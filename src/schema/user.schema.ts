@@ -11,8 +11,8 @@ export const loginUserInputSchema = z.object({
 export type LoginUserInput = z.TypeOf<typeof loginUserInputSchema>
 
 export const createUserSchema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
     email: z.string().email(),
 })
 export type CreateUserInput = z.TypeOf<typeof createUserSchema>
@@ -56,6 +56,18 @@ export const userListOutputSchema = z.object({
     lastName: z.string(),
     email: z.string(),
     emailVerified: z.date(),
-    isActive: z.boolean()
+    isActive: z.boolean(),
+    role: z.object({
+        name: z.string(),
+        value: z.number()
+    })
 }).array()
 export type UserListOutput = z.TypeOf<typeof userListOutputSchema>
+
+export const updateUserSchema = z.object({
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
+    newEmail: z.string().email(),
+    prevEmail: z.string().email(),
+})
+export type UpdateUserInput = z.TypeOf<typeof updateUserSchema>

@@ -60,8 +60,9 @@ ___
 - [x] page: login (page crashes when verifying otp)
 - [x] Script: create a script to populate db with default values (i.e. roles)
 - [x] page: navbar
-- [ ] page: admin (Section, Add & Edit Modals, Disable button)
+- [x] page: admin (Section, Add & Edit Modals, Disable button)
 - [ ] page: reports (all from everyone)
 - [ ] page: new report
+- [ ] page: admin (Complete reports section && logo upload section)
 - [ ] page: reports (created by logged in user)
-- [ ] page: account (password, name, and email change)
+- [ ] ZodError: format zod errors properly back to the client
