@@ -21,3 +21,10 @@ export const jobListOutputSchema = z.object({
     name: z.string(),
 }).array()
 export type JobListOutput = z.TypeOf<typeof jobListOutputSchema>
+
+export const jobListBoxSchema = z.object({
+    id: z.string(),
+    name: z.string().min(1),
+    contact: z.string().email().nullable().optional()
+})
+export type JobListBoxSchema = z.TypeOf<typeof jobListBoxSchema>

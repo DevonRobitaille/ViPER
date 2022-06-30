@@ -72,7 +72,6 @@ model Vendor {
   firstName String
   lastName  String
   email     String?
-  contact   String?
 
   company   Company @relation(fields: [companyId], references: [id])
   companyId String

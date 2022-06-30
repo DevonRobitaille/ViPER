@@ -24,3 +24,10 @@ export const companyListOutputSchema = z.object({
     contact: z.string().nullable().optional(),
 }).array()
 export type CompanyListOutput = z.TypeOf<typeof companyListOutputSchema>
+
+export const companyListBoxSchema = z.object({
+    id: z.string(),
+    name: z.string().min(1),
+    contact: z.string().email().nullable().optional()
+})
+export type CompanyListBoxSchema = z.TypeOf<typeof companyListBoxSchema>
