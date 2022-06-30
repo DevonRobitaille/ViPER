@@ -60,7 +60,7 @@ ___
 - [x] page: login (page crashes when verifying otp)
 - [x] Script: create a script to populate db with default values (i.e. roles)
 - [x] page: navbar
-- [ ] page: admin
+- [ ] page: admin (Section, Add & Edit Modals, Disable button)
 - [ ] page: reports (all from everyone)
 - [ ] page: new report
 - [ ] page: reports (created by logged in user)
