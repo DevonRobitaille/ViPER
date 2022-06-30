@@ -50,6 +50,23 @@ ___
 
 <br>
 
+## Screenshots
+___
+<p>https://url.com/setup</p>
+<img src='./imgs/Setup Page.png'/>
+<hr/>
+<p>https://url.com/</p>
+<img src='./imgs/Login Page.png'/>
+<hr/>
+<p>https://url.com/admin</p>
+<img src='./imgs/Admin Page.png'/>
+<hr/>
+<p>https://url.com/setup - Showing off the 'Add Vendor' Option</p>
+<img src='./imgs/Add Vendor.png'/>
+<hr/>
+
+<br>
+
 ## Todo
 ___
 - [x] tRPC: register-admin
