@@ -59,3 +59,11 @@ export const userListOutputSchema = z.object({
     isActive: z.boolean()
 }).array()
 export type UserListOutput = z.TypeOf<typeof userListOutputSchema>
+
+export const updateUserSchema = z.object({
+    firstName: z.string(),
+    lastName: z.string(),
+    newEmail: z.string().email(),
+    prevEmail: z.string().email(),
+})
+export type UpdateUserInput = z.TypeOf<typeof updateUserSchema>

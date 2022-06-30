@@ -1,16 +1,33 @@
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import AddUserModal from "../components/modal/addUserModal"
 import { useUserContext } from "../context/user.context"
 import { trpc } from "../utils/trpc"
+
+const AddUserModal = dynamic(() => import('../components/modal/addUserModal'), {
+    ssr: false
+})
+
+const EditUserModal = dynamic(() => import('../components/modal/editUserModal'), {
+    ssr: false
+})
 
 export function AdminPage() {
     const user = useUserContext()
     const router = useRouter()
 
     const [addUserModalIsOpen, setAddUserModalIsOpen] = useState(false);
+    const [editUserModalIsOpen, setEditUserModalIsOpen] = useState(false);
+    const [editUserDetails, setEditUserDetails] = useState({
+        firstName: "",
+        lastName: "",
+        email: ""
+    });
+
     const [companyModalIsOpen, setCompanyModalIsOpen] = useState(false);
+
     const [jobModalIsOpen, setJobModalIsOpen] = useState(false);
+
     const [vendorModalIsOpen, setVendorModalIsOpen] = useState(false);
 
     if (user?.role !== 'Admin') router.push('/')
@@ -19,8 +36,18 @@ export function AdminPage() {
 
         return (
             <>
-                {/* Add User Modal */}
-                <AddUserModal isOpen={addUserModalIsOpen} setIsOpen={setAddUserModalIsOpen} />
+                <AddUserModal
+                    isOpen={addUserModalIsOpen}
+                    setIsOpen={setAddUserModalIsOpen}
+                />
+                <EditUserModal
+                    firstNamePlaceholder={editUserDetails.firstName}
+                    lastNamePlaceholder={editUserDetails.lastName}
+                    emailPlaceholder={editUserDetails.email}
+                    isOpen={editUserModalIsOpen}
+                    setIsOpen={setEditUserModalIsOpen}
+                />
+
                 <div className='grid mt-10 grid-cols-1 gap-8 mx-20 md:grid-cols-2'>
                     {/* Users Section */}
                     <section className='flex-col'>
@@ -36,7 +63,10 @@ export function AdminPage() {
                                                     <p className='text-sm'>{user.firstName + " " + user.lastName}</p>
                                                     <p className='text-xs'>{user.email}</p>
                                                 </div>
-                                                <button onClick={() => { }} className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'>Edit</button>
+                                                <button onClick={() => {
+                                                    setEditUserDetails((prev) => prev = { ...prev, firstName: user.firstName, lastName: user.lastName, email: user.email })
+                                                    setEditUserModalIsOpen(true)
+                                                }} className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'>Edit</button>
                                                 <button onClick={() => { }} className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
                                             </div>
                                             <hr className='h-0.5 bg-[#DDD] m-2' />

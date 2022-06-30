@@ -7,7 +7,8 @@ import {
     requestOtpSchema,
     verifyOtpSchema,
     verifyEmailSchema,
-    userListOutputSchema
+    userListOutputSchema,
+    updateUserSchema
 } from '../../schema/user.schema'
 import { decode, encode } from '../../utils/base64'
 import { signJwt } from '../../utils/jwt'
@@ -44,9 +45,9 @@ export const userRouter = createRouter()
 
                 const user = await ctx.prisma.user.create({
                     data: {
-                        email,
-                        firstName,
-                        lastName,
+                        email: email.trim(),
+                        firstName: firstName.trim(),
+                        lastName: lastName.trim(),
                         roleId: adminRole.id,
                         isActive: true
                     },
@@ -121,9 +122,9 @@ export const userRouter = createRouter()
 
                 const user = await ctx.prisma.user.create({
                     data: {
-                        email,
-                        firstName,
-                        lastName,
+                        email: email.trim(),
+                        firstName: firstName.trim(),
+                        lastName: lastName.trim(),
                         roleId: userRole.id,
                         isActive: true
                     },
@@ -208,6 +209,56 @@ export const userRouter = createRouter()
             })
 
             return true
+        }
+    })
+    .mutation('update-user', {
+        input: updateUserSchema,
+        async resolve({ ctx, input }) {
+            const { firstName, lastName, newEmail, prevEmail } = input
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            // only admin can change profile details
+            if (ctx.user.role !== 'Admin') {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            try {
+                const user = await ctx.prisma.user.update({
+                    where: {
+                        email: prevEmail
+                    },
+                    data: {
+                        firstName,
+                        lastName,
+                        email: newEmail
+                    }
+                })
+
+                return true
+            } catch (e) {
+                if (e instanceof PrismaClientKnownRequestError) {
+                    if (e.code === 'P2002') {
+                        throw new trpc.TRPCError({
+                            code: 'CONFLICT',
+                            message: 'User already exists',
+                        })
+                    }
+                }
+
+                throw new trpc.TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong',
+                })
+            }
         }
     })
     .query('verify-otp', {
