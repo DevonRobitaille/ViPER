@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import * as trpc from '@trpc/server'
 import { serialize } from 'cookie'
+import { z } from 'zod'
 import { baseUrl, url } from '../../constants'
 import {
     createUserSchema,
@@ -240,6 +241,58 @@ export const userRouter = createRouter()
                         firstName,
                         lastName,
                         email: newEmail
+                    }
+                })
+
+                return true
+            } catch (e) {
+                if (e instanceof PrismaClientKnownRequestError) {
+                    if (e.code === 'P2002') {
+                        throw new trpc.TRPCError({
+                            code: 'CONFLICT',
+                            message: 'User already exists',
+                        })
+                    }
+                }
+
+                throw new trpc.TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong',
+                })
+            }
+        }
+    })
+    .mutation('disable-user', {
+        input: z.object({
+            email: z.string().email(),
+            toggle: z.boolean()
+        }),
+        async resolve({ ctx, input }) {
+            const { email, toggle } = input
+
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            // only admin can change profile details
+            if (ctx.user.role !== 'Admin') {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            try {
+                const user = await ctx.prisma.user.update({
+                    where: {
+                        email
+                    },
+                    data: {
+                        isActive: toggle
                     }
                 })
 

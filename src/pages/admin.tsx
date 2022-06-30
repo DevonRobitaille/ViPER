@@ -16,6 +16,7 @@ export function AdminPage() {
     const user = useUserContext()
     const router = useRouter()
 
+    // User Section
     const [addUserModalIsOpen, setAddUserModalIsOpen] = useState(false);
     const [editUserModalIsOpen, setEditUserModalIsOpen] = useState(false);
     const [editUserDetails, setEditUserDetails] = useState({
@@ -23,11 +24,15 @@ export function AdminPage() {
         lastName: "",
         email: ""
     });
+    const { mutate: toggleUserMutate } = trpc.useMutation(['users.disable-user'])
 
+    // Company Section
     const [companyModalIsOpen, setCompanyModalIsOpen] = useState(false);
 
+    // Job Section
     const [jobModalIsOpen, setJobModalIsOpen] = useState(false);
 
+    // Vendor Section
     const [vendorModalIsOpen, setVendorModalIsOpen] = useState(false);
 
     if (user?.role !== 'Admin') router.push('/')
@@ -67,7 +72,7 @@ export function AdminPage() {
                                                     setEditUserDetails((prev) => prev = { ...prev, firstName: user.firstName, lastName: user.lastName, email: user.email })
                                                     setEditUserModalIsOpen(true)
                                                 }} className='btn flex items-center h-5 justify-center w-10 text-xs mr-2'>Edit</button>
-                                                <button onClick={() => { }} className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
+                                                <button onClick={() => toggleUserMutate({ email: user.email, toggle: !user.isActive })} className='btn flex items-center h-5 justify-center w-20 text-xs'>{user.isActive ? "Disable" : "Enable"}</button>
                                             </div>
                                             <hr className='h-0.5 bg-[#DDD] m-2' />
                                         </div>
