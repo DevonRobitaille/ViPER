@@ -66,3 +66,4 @@ ___
 - [ ] page: admin (Complete reports section && logo upload section)
 - [ ] page: reports (created by logged in user)
 - [ ] ZodError: format zod errors properly back to the client
+- [ ] page: admin (allow to filter content, i.e., vendor can be filtered by job title or company)
