@@ -4,6 +4,8 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { CreateVendorInput, VendorListBoxSchema } from '../schema/vendor.schema'
 import { trpc } from '../utils/trpc'
 import { useRouter } from 'next/router'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const TYPE_OF_REPORTS = [
     'PERIODIC',
@@ -58,6 +60,7 @@ function PERFORM() {
 
     // Report Types (Section 2)
     const [reportTypeSelected, setReportTypeSelected] = useState<string>(TYPE_OF_REPORTS[0])
+    const [reportDate, setReportDate] = useState<Date>(() => new Date())
 
     // Section 4
     const [performanceMetric, setPerformanceMetric] = useState<PERFORMANCE_METRICS_INTERFACE>(PERFORMANCE_METRICS)
@@ -80,7 +83,7 @@ function PERFORM() {
         const report = {
             vendorId: vendorSelected.id,
             reportType: reportTypeSelected,
-            reportDate: new Date(),
+            reportDate: reportDate,
             objectivesReviewed: ta_3.value,
             performanceScores: performanceMetric,
             justification: ta_4.value,
@@ -188,7 +191,7 @@ function PERFORM() {
             </section>
 
             {/* SECTION 2: GENERAL */}
-            <section>
+            <section >
                 <div className="px-2 border rounded-none border-t-1 border-black">
                     <p className="font-semibold text-base">SECTION 2: GENERAL</p>
                 </div>
@@ -241,8 +244,9 @@ function PERFORM() {
                             </Transition>
                         </div>
                     </Listbox>
-                    <div>
-                        date
+                    <div className='flex h-full items-center'>
+                        <p className='text-sm min-w-max pr-2 text-[#888]'>Next Report Date:</p>
+                        <DatePicker className='flex h-[35px] inputDiv pl-5' selected={reportDate} onChange={(date) => setReportDate(date)} />
                     </div>
                 </div>
             </section>

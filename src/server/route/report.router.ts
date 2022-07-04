@@ -23,8 +23,6 @@ export const reportRouter = createRouter()
                 additionalNotes
             } = input
 
-            console.log(input)
-
             try {
                 // User has to be signed in
                 if (!ctx.user) {
