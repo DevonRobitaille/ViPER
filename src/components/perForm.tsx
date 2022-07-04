@@ -159,19 +159,19 @@ function PERFORM() {
                     <div className='col-span-2' />
                     {/* Populate Fields */}
                     <div className="inputDiv">
-                        <input id="vendor-firstName" disabled value={vendorSelected ? vendorSelected.firstName : undefined} placeholder="First Name" className="inputField" />
+                        <input id="vendor-firstName" disabled value={vendorSelected ? vendorSelected.firstName : undefined} placeholder="First Name" className="inputField text-[#888] bg-[#EDEDED]" />
                     </div>
                     <div className="inputDiv">
-                        <input id="vendor-lastName" disabled value={vendorSelected ? vendorSelected.lastName : undefined} placeholder="Last Name" className="inputField" />
+                        <input id="vendor-lastName" disabled value={vendorSelected ? vendorSelected.lastName : undefined} placeholder="Last Name" className="inputField text-[#888] bg-[#EDEDED]" />
                     </div>
                     <div className="inputDiv">
-                        <input id="vendor-contact" disabled value={vendorSelected ? vendorSelected.email === null ? "No email provided" : vendorSelected.email : undefined} placeholder="Email (optional)" className="inputField" />
+                        <input id="vendor-contact" disabled value={vendorSelected ? vendorSelected.email === null ? "No email provided" : vendorSelected.email : undefined} placeholder="Email (optional)" className="inputField text-[#888] bg-[#EDEDED]" />
                     </div>
                     <div className="inputDiv">
-                        <input id="vendor-job" disabled value={vendorSelected ? vendorSelected.job.name : undefined} placeholder="Job" className="inputField" />
+                        <input id="vendor-job" disabled value={vendorSelected ? vendorSelected.job.name : undefined} placeholder="Job" className="inputField text-[#888] bg-[#EDEDED]" />
                     </div>
                     <div className="inputDiv">
-                        <input id="vendor-company" disabled value={vendorSelected ? vendorSelected.company.name : undefined} placeholder="Company" className="inputField" />
+                        <input id="vendor-company" disabled value={vendorSelected ? vendorSelected.company.name : undefined} placeholder="Company" className="inputField text-[#888] bg-[#EDEDED]" />
                     </div>
                 </div>
             </section>

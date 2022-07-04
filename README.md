@@ -64,6 +64,9 @@ ___
 <p>https://url.com/setup - Showing off the 'Add Vendor' Option</p>
 <img src='./imgs/Add Vendor.png'/>
 <hr/>
+<p>https://url.com/new</p>
+<img src='./imgs/New Report Page.png'/>
+<hr/>
 
 <br>
 
