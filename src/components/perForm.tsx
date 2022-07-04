@@ -36,6 +36,7 @@ interface PERFORMANCE_METRICS_INTERFACE {
 
 function PERFORM() {
     const router = useRouter()
+    const { mutate, error: reportError } = trpc.useMutation(['report.create-report'])
 
     // Vendor ComboBox (Section 1)
     const [vendorSelected, setVendorSelected] = useState<VendorListBoxSchema | null>(null)
@@ -68,19 +69,29 @@ function PERFORM() {
     const [overallPerformance, setOverallPerformance] = useState<number>(1)
 
     const handleSubmit = () => {
+        if (!vendorSelected) return;
+        const ta_3 = document.getElementById('tA-3') as HTMLTextAreaElement;
+        const ta_4 = document.getElementById('tA-4') as HTMLTextAreaElement;
+        const ta_5 = document.getElementById('tA-5') as HTMLTextAreaElement;
+        const ta_6 = document.getElementById('tA-6') as HTMLTextAreaElement;
+
+        if (ta_3?.value === undefined || !ta_4?.value === undefined || ta_5?.value === undefined || ta_6?.value === undefined) return
+
         const report = {
-            vendorId: vendorSelected?.id,
+            vendorId: vendorSelected.id,
             reportType: reportTypeSelected,
-            reportDate: undefined,
-            objectivesReviewed: document?.getElementById('tA-3')?.value,
+            reportDate: new Date(),
+            objectivesReviewed: ta_3.value,
             performanceScores: performanceMetric,
-            justification: document?.getElementById('tA-4')?.value,
+            justification: ta_4.value,
             overallPerformance: overallPerformance,
-            objectivesFuture: document?.getElementById('tA-5')?.value,
-            additionalNotes: document?.getElementById('tA-6')?.value,
+            objectivesFuture: ta_5.value,
+            additionalNotes: ta_6.value,
         }
 
-        router.push('/reports')
+        console.log(report)
+        const success = mutate({ ...report })
+        if (success) router.push('/reports')
     }
 
     return (
