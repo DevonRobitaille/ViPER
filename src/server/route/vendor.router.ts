@@ -122,14 +122,6 @@ export const vendorRouter = createRouter()
                 })
             }
 
-            // only admin can change profile details
-            if (ctx.user.role !== 'Admin') {
-                throw new trpc.TRPCError({
-                    code: 'FORBIDDEN',
-                    message: 'Invalid token',
-                })
-            }
-
             const vendorList = await ctx.prisma.vendor.findMany({
                 include: {
                     company: true,

@@ -39,3 +39,19 @@ export const vendorListOutputSchema = z.object({
     }),
 }).array()
 export type VendorListOutput = z.TypeOf<typeof vendorListOutputSchema>
+
+export const vendorListBoxSchema = z.object({
+    id: z.string(),
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
+    email: z.string().email().nullable().optional(),
+    company: z.object({
+        id: z.string(),
+        name: z.string(),
+    }),
+    job: z.object({
+        id: z.string(),
+        name: z.string(),
+    }),
+})
+export type VendorListBoxSchema = z.TypeOf<typeof vendorListBoxSchema>

@@ -64,6 +64,9 @@ ___
 <p>https://url.com/setup - Showing off the 'Add Vendor' Option</p>
 <img src='./imgs/Add Vendor.png'/>
 <hr/>
+<p>https://url.com/new</p>
+<img src='./imgs/New Report Page.png'/>
+<hr/>
 
 <br>
 
@@ -78,8 +81,8 @@ ___
 - [x] Script: create a script to populate db with default values (i.e. roles)
 - [x] page: navbar
 - [x] page: admin (Section, Add & Edit Modals, Disable button)
+- [x] page: new report
 - [ ] page: reports (all from everyone)
-- [ ] page: new report
 - [ ] page: admin (Complete reports section && logo upload section)
 - [ ] page: reports (created by logged in user)
 - [ ] ZodError: format zod errors properly back to the client

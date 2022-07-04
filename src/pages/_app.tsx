@@ -9,9 +9,11 @@ import { AppRouter } from '../server/route/app.router'
 import { trpc } from '../utils/trpc'
 import { UserContextProvider } from '../context/user.context'
 import NavBar from '../components/navBar'
+import { useRouter } from 'next/router'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { data, error, isLoading } = trpc.useQuery(['users.me'])
+  const router = useRouter();
 
   if (isLoading) {
     return <>Loading user...</>
@@ -19,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <UserContextProvider value={data}>
-      {data && data.role && <NavBar />}
+      {data && data.role && router.pathname !== '/' && router.pathname !== '/setup' && <NavBar />}
       <Component {...pageProps} />
     </UserContextProvider>
   )
