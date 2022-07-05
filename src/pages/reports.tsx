@@ -16,7 +16,7 @@ function Reports() {
             {/* Report List */}
             <div className='flex-1 ml-5 md:ml-0 mr-5 my-2'>
                 <table className='table-auto min-w-full'>
-                    <thead className='border-b-2'>
+                    <thead className='border-b-2 border-[#CCC]'>
                         <th className='font-normal text-[#888]'>Vendor</th>
                         <th className='font-normal text-[#888]'>Evaluator</th>
                         <th className='font-normal text-[#888]'>Supervisor</th>
@@ -26,7 +26,7 @@ function Reports() {
                     <tbody>
                         {data && data.map((report, index) => {
                             return (
-                                <tr key={report.id} className="hover:cursor-pointer" onClick={() => router.push({ pathname: '/report', query: { id: report.id } })}>
+                                <tr key={report.id} className="hover:cursor-pointer border-b-[1px] border-[#CCC]" onClick={() => router.push({ pathname: '/report', query: { id: report.id } })}>
                                     <td className='text-sm text-center'>
                                         <div className='flex flex-col'>
                                             <span>{report.vendor.firstName + " " + report.vendor.lastName}</span>
