@@ -6,6 +6,7 @@ import {
     createReportSchema,
     reportListSchema,
     reportOutputSchema,
+    updateReportSchema,
 } from '../../schema/report.schema'
 import { createRouter } from '../createRouter'
 
@@ -67,7 +68,7 @@ export const reportRouter = createRouter()
                                 onTimeDelivery: performanceScores['1. On Time Delivery'],
                                 cost: performanceScores['2. Cost'],
                                 quality: performanceScores['3. Quality'],
-                                reponsiveness: performanceScores['4. Responsiveness'],
+                                responsiveness: performanceScores['4. Responsiveness'],
                                 reliability: performanceScores['5. Reliability'],
                                 accountability: performanceScores['6. Accountability'],
                                 leadTime: performanceScores['7. Lead Time'],
@@ -80,6 +81,116 @@ export const reportRouter = createRouter()
                                 id: ctx.user.id
                             }
                         }
+                    }
+                })
+                if (!report) throw new trpc.TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong',
+                })
+
+                return true
+            } catch (e) {
+                console.error(e)
+
+                if (e instanceof PrismaClientKnownRequestError) {
+                    if (e.code === 'P2002') {
+                        throw new trpc.TRPCError({
+                            code: 'CONFLICT',
+                            message: 'Report already exists',
+                        })
+                    }
+
+                    if (e.code === 'P2003') {
+                        throw new trpc.TRPCError({
+                            code: 'CONFLICT',
+                            message: e.message,
+                        })
+                    }
+                }
+
+                if (e instanceof Error) {
+                    throw new trpc.TRPCError({
+                        code: 'INTERNAL_SERVER_ERROR',
+                        message: e.message,
+                    })
+                }
+
+                throw new trpc.TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong',
+                })
+            }
+        },
+    })
+    .mutation('update-report', {
+        input: updateReportSchema,
+        output: z.boolean().nullable(),
+        async resolve({ ctx, input }) {
+            let {
+                vendorId,
+                reportType,
+                reportDate,
+                objectivesReviewed,
+                performanceScores,
+                justification,
+                overallPerformance,
+                objectivesFuture,
+                additionalNotes,
+                id
+            } = input
+
+            try {
+                // User has to be signed in
+                if (!ctx.user) {
+                    throw new trpc.TRPCError({
+                        code: 'FORBIDDEN',
+                        message: 'Invalid token',
+                    })
+                }
+
+                // clean data
+                reportType = reportType.toUpperCase()
+                reportType = reportType.replace(/\s+/g, '_');
+
+                const vendor = await ctx.prisma.vendor.findUnique({
+                    where: {
+                        id: vendorId
+                    }
+                })
+
+                if (!vendor) return false
+
+                // Create Report
+                const report = await ctx.prisma.report.update({
+                    where: {
+                        id
+                    },
+                    data: {
+                        vendor: {
+                            connect: {
+                                id: vendor.id
+                            }
+                        },
+                        reportType,
+                        reportDate,
+                        objectivesReviewed,
+                        justification,
+                        overallPerformance,
+                        objectivesFuture,
+                        additionalNotes,
+                        score: {
+                            update: {
+                                onTimeDelivery: performanceScores['1. On Time Delivery'],
+                                cost: performanceScores['2. Cost'],
+                                quality: performanceScores['3. Quality'],
+                                responsiveness: performanceScores['4. Responsiveness'],
+                                reliability: performanceScores['5. Reliability'],
+                                accountability: performanceScores['6. Accountability'],
+                                leadTime: performanceScores['7. Lead Time'],
+                                changeOrder: performanceScores['8. Change Order'],
+                                professionalism: performanceScores['9. Professionalism'],
+                            }
+                        },
                     }
                 })
                 if (!report) throw new trpc.TRPCError({

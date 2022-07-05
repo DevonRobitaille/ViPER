@@ -116,17 +116,19 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
                                 </thead>
                                 <tbody>
                                     {report && report?.score && Object.keys(report.score).map((score, index) => {
-                                        return (
-                                            <tr key={score}>
-                                                <td className='w-[99%] text-md md:text-sm'>{score}</td>
-                                                <td><input type='radio' disabled checked={report.score[score] === 0} /></td>
-                                                <td><input type='radio' disabled checked={report.score[score] === 1} /></td>
-                                                <td><input type='radio' disabled checked={report.score[score] === 2} /></td>
-                                                <td><input type='radio' disabled checked={report.score[score] === 3} /></td>
-                                                <td><input type='radio' disabled checked={report.score[score] === 4} /></td>
-                                                <td><input type='radio' disabled checked={report.score[score] === 5} /></td>
-                                            </tr>
-                                        )
+                                        if (score !== "id") {
+                                            return (
+                                                <tr key={score}>
+                                                    <td className='w-[99%] text-md md:text-sm'>{score}</td>
+                                                    <td><input type='radio' disabled checked={report.score[score] === 0} /></td>
+                                                    <td><input type='radio' disabled checked={report.score[score] === 1} /></td>
+                                                    <td><input type='radio' disabled checked={report.score[score] === 2} /></td>
+                                                    <td><input type='radio' disabled checked={report.score[score] === 3} /></td>
+                                                    <td><input type='radio' disabled checked={report.score[score] === 4} /></td>
+                                                    <td><input type='radio' disabled checked={report.score[score] === 5} /></td>
+                                                </tr>
+                                            )
+                                        }
                                     })}
                                 </tbody>
                             </table>
@@ -216,7 +218,7 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
                 <div className='my-10 flex-1' />
 
                 {/* Buttons */}
-                <button className='btn mb-1'>Edit</button>
+                <button className='btn mb-1' onClick={() => router.push({ pathname: '/edit', query: { id: report?.id ? report.id : "" } })}>Edit</button>
                 <button onClick={() => {
                     mutate({ id })
                     router.reload()

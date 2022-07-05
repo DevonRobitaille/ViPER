@@ -1,11 +1,9 @@
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { LoginUserInput } from '../schema/user.schema'
 import { trpc } from '../utils/trpc'
 import { UserIcon } from '@heroicons/react/outline'
-
 
 function VerifyToken({ hash }: { hash: string }) {
     const router = useRouter()
@@ -24,7 +22,6 @@ function VerifyToken({ hash }: { hash: string }) {
 
     return <p>Redirecting...</p>
 }
-
 
 function LoginForm() {
     const { handleSubmit, register, reset } = useForm<LoginUserInput>()

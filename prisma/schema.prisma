@@ -111,7 +111,7 @@ model Score {
   onTimeDelivery  Int
   cost            Int
   quality         Int
-  reponsiveness   Int
+  responsiveness  Int
   reliability     Int
   accountability  Int
   leadTime        Int
