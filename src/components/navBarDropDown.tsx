@@ -63,34 +63,6 @@ function NavBarDropDown() {
                         <hr />
                         <Menu.Item>
                             {({ active }) => (
-                                <div className='NavButtons flex hover:text-black text-[#A0A0A0] hover:cursor-pointer hover:bg-gray-200 hover:border hover:rounded-lg hover:font-semibold py-0 px-2 m-0'>
-                                    <FolderOpenIcon className='h-9 mt-1' />
-                                    <p
-                                        onClick={() => router.push('/folder')}
-                                        className='flex flex-1 px-2 py-2 text-sm'
-                                    >
-                                        Folder
-                                    </p>
-                                </div>
-
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
-                                <div className='NavButtons flex hover:text-black hover:cursor-pointer text-[#A0A0A0] hover:bg-gray-200 hover:border hover:rounded-lg hover:font-semibold py-0 px-2 m-0'>
-                                    <UserIcon className='h-9' />
-                                    <p
-                                        onClick={() => router.push('/profile')}
-                                        className='flex flex-1 px-2 py-2 text-sm'
-                                    >
-                                        Account
-                                    </p>
-                                </div>
-
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
                                 <div className='NavButtons flex hover:text-black hover:cursor-pointer text-[#A0A0A0] hover:bg-gray-200 hover:border hover:rounded-lg hover:font-semibold py-0 px-2 m-0'>
                                     <LogoutIcon className='h-9 w-7' />
                                     <p
