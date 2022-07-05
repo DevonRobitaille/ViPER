@@ -27,3 +27,29 @@ export const createReportSchema = z.object({
     additionalNotes: z.string().optional()
 })
 export type CreateReport = z.TypeOf<typeof createReportSchema>
+
+export const reportListSchema = z.object({
+    id: z.string(),
+    vendor: z.object({
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string().email().optional().nullable(),
+        job: z.object({
+            name: z.string()
+        }),
+        company: z.object({
+            name: z.string()
+        })
+    }),
+    evaluator: z.object({
+        firstName: z.string(),
+        lastName: z.string()
+    }),
+    supervisor: z.object({
+        firstName: z.string(),
+        lastName: z.string()
+    }).optional().nullable(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+}).array()
+export type ReportListSchema = z.TypeOf<typeof reportListSchema>

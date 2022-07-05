@@ -3,6 +3,7 @@ import * as trpc from '@trpc/server'
 import { z } from 'zod'
 import {
     createReportSchema,
+    reportListSchema,
 } from '../../schema/report.schema'
 import { createRouter } from '../createRouter'
 
@@ -117,4 +118,36 @@ export const reportRouter = createRouter()
                 })
             }
         },
+    })
+    .query('all', {
+        output: reportListSchema,
+        async resolve({ ctx }) {
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            const reportList = await ctx.prisma.report.findMany({
+                include: {
+                    evaluator: true,
+                    supervisor: true,
+                    vendor: {
+                        include: {
+                            job: true,
+                            company: true
+                        }
+                    }
+                }
+            })
+
+            if (!reportList) throw new trpc.TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'Something went wrong',
+            })
+
+            return reportList
+        }
     })

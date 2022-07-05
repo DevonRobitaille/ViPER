@@ -19,6 +19,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     return <>Loading user...</>
   }
 
+  if (router.pathname !== '/' && router.pathname !== '/setup' && !data) router.push('/')
+
   return (
     <UserContextProvider value={data}>
       {data && data.role && router.pathname !== '/' && router.pathname !== '/setup' && <NavBar />}
