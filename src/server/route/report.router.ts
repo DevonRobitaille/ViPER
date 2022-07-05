@@ -34,7 +34,7 @@ export const reportRouter = createRouter()
 
                 // clean data
                 reportType = reportType.toUpperCase()
-                reportType.replace(/\s+/g, '_');
+                reportType = reportType.replace(/\s+/g, '_');
 
                 const vendor = await ctx.prisma.vendor.findUnique({
                     where: {
