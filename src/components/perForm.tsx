@@ -106,70 +106,73 @@ function PERFORM() {
                 </div>
                 <div className="bg-[#DDD] px-2 py-2 border rounded-none border-black grid grid-cols-1 md:grid-cols-3 gap-2">
                     {/* Select Vendor */}
-                    <Combobox value={vendorSelected} onChange={setVendorSelected}>
-                        <div className='relative'>
-                            {/* Input Field */}
-                            <div className="inputField inputDiv focus:outline-none flex flex-row">
-                                <Combobox.Input
-                                    className='w-full border-none py-2 text-sm leading-5 text-gray-900 focus:outline-none'
-                                    displayValue={(vendor: CreateVendorInput) => vendor ? vendor.firstName + " " + vendor.lastName : ""}
-                                    onChange={(event) => setQuery(event.target.value)}
-                                />
-                                <Combobox.Button className="absoluate inset-y-0 right-0 flex items-center pr-2">
-                                    <SelectorIcon
-                                        className='icon h-5'
-                                        aria-hidden="true"
+                    <div className='flex items-center'>
+                        <p className='text-base min-w-max pl-1 pr-2 text-[#888]'>Vendor:</p>
+                        <Combobox value={vendorSelected} onChange={setVendorSelected}>
+                            <div className='relative flex-1'>
+                                {/* Input Field */}
+                                <div className="inputField inputDiv focus:outline-none flex flex-row">
+                                    <Combobox.Input
+                                        className='w-full border-none py-2 text-sm leading-5 text-gray-900 focus:outline-none'
+                                        displayValue={(vendor: CreateVendorInput) => vendor ? vendor.firstName + " " + vendor.lastName : ""}
+                                        onChange={(event) => setQuery(event.target.value)}
                                     />
-                                </Combobox.Button>
-                            </div>
-                            {/* Dropdown selection */}
-                            <Transition
-                                as={Fragment}
-                                leave="transition ease-in duration-100"
-                                leaveFrom="opacity-100"
-                                leaveTo="opacity-0"
-                                afterLeave={() => setQuery('')}
-                            >
-                                <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-none bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                    {filteredVendors && filteredVendors.length === 0 && query !== '' ? (
-                                        <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                                            Nothing found.
-                                        </div>
-                                    ) : (
-                                        filteredVendors && filteredVendors.map((vendor) => (
-                                            <Combobox.Option
-                                                key={vendor.id}
-                                                className={({ active }) =>
-                                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-gray-200 font-semibold' : 'text-gray-900'
-                                                    }`
-                                                }
-                                                value={vendor}
-                                            >
-                                                {({ selected, active }) => (
-                                                    <>
-                                                        <span
-                                                            className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                                                }`}
-                                                        >
-                                                            {vendor.firstName + " " + vendor.lastName}
-                                                        </span>
-                                                        {selected ? (
+                                    <Combobox.Button className="absoluate inset-y-0 right-0 flex items-center pr-2">
+                                        <SelectorIcon
+                                            className='icon h-5'
+                                            aria-hidden="true"
+                                        />
+                                    </Combobox.Button>
+                                </div>
+                                {/* Dropdown selection */}
+                                <Transition
+                                    as={Fragment}
+                                    leave="transition ease-in duration-100"
+                                    leaveFrom="opacity-100"
+                                    leaveTo="opacity-0"
+                                    afterLeave={() => setQuery('')}
+                                >
+                                    <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-none bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                        {filteredVendors && filteredVendors.length === 0 && query !== '' ? (
+                                            <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                                                Nothing found.
+                                            </div>
+                                        ) : (
+                                            filteredVendors && filteredVendors.map((vendor) => (
+                                                <Combobox.Option
+                                                    key={vendor.id}
+                                                    className={({ active }) =>
+                                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-gray-200 font-semibold' : 'text-gray-900'
+                                                        }`
+                                                    }
+                                                    value={vendor}
+                                                >
+                                                    {({ selected, active }) => (
+                                                        <>
                                                             <span
-                                                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-white' : 'text-[#FF0066]'
+                                                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
                                                                     }`}
                                                             >
-                                                                <CheckIcon className="h-5 w-5 text-[#FF0066]" aria-hidden="true" />
+                                                                {vendor.firstName + " " + vendor.lastName}
                                                             </span>
-                                                        ) : null}
-                                                    </>
-                                                )}
-                                            </Combobox.Option>
-                                        ))
-                                    )}
-                                </Combobox.Options>
-                            </Transition>
-                        </div>
-                    </Combobox>
+                                                            {selected ? (
+                                                                <span
+                                                                    className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-white' : 'text-[#FF0066]'
+                                                                        }`}
+                                                                >
+                                                                    <CheckIcon className="h-5 w-5 text-[#FF0066]" aria-hidden="true" />
+                                                                </span>
+                                                            ) : null}
+                                                        </>
+                                                    )}
+                                                </Combobox.Option>
+                                            ))
+                                        )}
+                                    </Combobox.Options>
+                                </Transition>
+                            </div>
+                        </Combobox>
+                    </div>
                     <div className='col-span-2' />
                     {/* Populate Fields */}
                     <div className="inputDiv">
@@ -323,9 +326,9 @@ function PERFORM() {
 
                     </div>
                     {/* Justification */}
-                    <div className='bg-[#DDD] w-full h-full p-2 col-span-2'>
+                    <div className='bg-[#DDD] w-full h-full p-2 col-span-2 pt-4'>
                         <div className='inputDiv'>
-                            <textarea id="tA-4" placeholder='Justification for performance evaluation...' className='w-full py-1 px-2 focus:outline-none'></textarea>
+                            <textarea rows={9} id="tA-4" placeholder='Justification for performance evaluation...' className='w-full py-1 px-2 focus:outline-none'></textarea>
                         </div>
                     </div>
                 </div>
