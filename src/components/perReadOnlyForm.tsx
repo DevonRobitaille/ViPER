@@ -53,7 +53,7 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
                     </div>
                     <div className="bg-[#DDD] px-2 py-2 border rounded-none border-black grid grid-cols-1 md:grid-cols-3 gap-2">
                         <div className="inputDiv">
-                            <input id="reportType" disabled value={report?.reportType ? report.reportType : undefined} placeholder="Company" className="inputField black bg-[#EDEDED]" />
+                            <input id="reportType" disabled value={report?.reportType ? report.reportType.replace(/_/g, " ") : undefined} placeholder="Company" className="inputField black bg-[#EDEDED]" />
                         </div>
                         <div className="inputDiv">
                             <input id="reportDate" disabled value={report?.reportDate ? format(report.reportDate, "dd MMMM, yyyy") : undefined} placeholder="Company" className="inputField black bg-[#EDEDED]" />
@@ -218,12 +218,12 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
                 <div className='my-10 flex-1' />
 
                 {/* Buttons */}
-                <button className='btn mb-1' onClick={() => router.push({ pathname: '/edit', query: { id: report?.id ? report.id : "" } })}>Edit</button>
+                <button className={`btn mb-1 ${report?.approvedAt ? "hidden" : ""}`} onClick={() => router.push({ pathname: '/edit', query: { id: report?.id ? report.id : "" } })}>Edit</button>
                 <button onClick={() => {
                     mutate({ id })
                     router.reload()
                 }} className={`btn mb-1 ${report?.approvedAt ? "hidden" : ""}`}>Approve</button>
-                <button className='btn mb-1'>History</button>
+                {/* <button className='btn mb-1'>History</button> */}
             </div >
         </div >
     )

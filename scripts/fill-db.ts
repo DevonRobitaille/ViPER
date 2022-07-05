@@ -15,6 +15,31 @@ const doBackFill = async () => {
     })
 
     console.log("Roles", roles)
+
+    const jobs = await prisma.job.createMany({
+        data: [
+            {
+                name: "Painter"
+            },
+            {
+                name: "Electrician"
+            },
+            {
+                name: "Duct Cleaner"
+            },
+            {
+                name: "Carpenter"
+            },
+            {
+                name: "Plumber"
+            },
+            {
+                name: "Landscaper"
+            }
+        ]
+    })
+
+    console.log("Jobs", jobs)
 }
 
 doBackFill()
