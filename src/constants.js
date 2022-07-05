@@ -5,3 +5,8 @@ export const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
 export const url = `${baseUrl}/api/trpc`
 
 export const PAGE_SIZE = 20;
+
+export const TYPE_OF_REPORTS = [
+    'PERIODIC',
+    'INCREASED SUPERVISION'
+]

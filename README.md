@@ -70,6 +70,9 @@ ___
 <p>https://url.com/reports</p>
 <img src='./imgs/Reports Page.png'/>
 <hr/>
+<p>https://url.com/report?id=...</p>
+<img src='./imgs/Individual Report Page.png'/>
+<hr/>
 
 <br>
 
@@ -86,7 +89,7 @@ ___
 - [x] page: admin (Section, Add & Edit Modals, Disable button)
 - [x] page: new report
 - [x] page: reports (all from everyone)
-- [ ] page: report?id=... (show details of specific report)
+- [x] page: report?id=... (show details of specific report)
 - [ ] ZodError: format zod errors properly back to the client
 
 ### Quality of life improvements
@@ -94,3 +97,4 @@ ___
 - [ ] page: analytics (allow to see the performance by either company or vendors by a graph?)
 - [ ] page: admin (allow to filter content, i.e., vendor can be filtered by job title or company)
 - [ ] page: admin (Complete logo upload section)
+- [ ] Archive / History (created a way to make a history of changes to a report)

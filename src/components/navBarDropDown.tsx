@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useUserContext } from '../context/user.context'
 import { MenuIcon } from '@heroicons/react/solid'
-import { UserIcon, LogoutIcon, FolderOpenIcon, CogIcon, DocumentReportIcon } from '@heroicons/react/outline'
+import { LogoutIcon, CogIcon, DocumentReportIcon } from '@heroicons/react/outline'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { trpc } from '../utils/trpc'

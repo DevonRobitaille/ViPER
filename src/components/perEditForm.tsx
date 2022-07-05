@@ -6,8 +6,10 @@ import { trpc } from '../utils/trpc'
 import { useRouter } from 'next/router'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import { TYPE_OF_REPORTS } from '../constants'
+import { NextPage } from 'next'
+import { format, parseISO } from 'date-fns'
+import { report } from 'process'
 
 const PERFORMANCE_METRICS = {
     '1. On Time Delivery': 0,
@@ -19,6 +21,18 @@ const PERFORMANCE_METRICS = {
     '7. Lead Time': 0,
     '8. Change Order': 0,
     '9. Professionalism': 0
+}
+
+const PERFORMANCE_METRICS_LOOKUP = {
+    'onTimeDelivery': '1. On Time Delivery',
+    'cost': '2. Cost',
+    'quality': '3. Quality',
+    'responsiveness': '4. Responsiveness',
+    'reliability': '5. Reliability',
+    'accountability': '6. Accountability',
+    'leadTime': '7. Lead Time',
+    'changeOrder': '8. Change Order',
+    'professionalism': '9. Professionalism'
 }
 
 interface PERFORMANCE_METRICS_INTERFACE {
@@ -33,16 +47,38 @@ interface PERFORMANCE_METRICS_INTERFACE {
     '9. Professionalism': number;
 }
 
-function PERFORM() {
+interface IProps {
+    id: string
+}
+
+const PEREditFORM: NextPage<IProps> = (props) => {
     const router = useRouter()
-    const { mutate, error: reportError } = trpc.useMutation(['report.create-report'])
+    const { id } = props
+    const { mutate } = trpc.useMutation(['report.update-report'])
+
+    const { data: report, error: reportError } = trpc.useQuery(['report.get-id', {
+        id
+    }])
 
     // Vendor ComboBox (Section 1)
     const [vendorSelected, setVendorSelected] = useState<VendorListBoxSchema | null>(null)
     const [query, setQuery] = useState<string>('')
     const { data: vendors, error } = trpc.useQuery(['vendor.all'], {
         onSuccess: (result) => {
-            setVendorSelected(result[0])
+            setVendorSelected(report?.vendor ? report.vendor : null)
+            if (report?.score) {
+                Object.keys(report.score).forEach((r) => {
+                    console.log(r)
+                    const metric = PERFORMANCE_METRICS_LOOKUP[r]
+                    changeMetric(
+                        {
+                            metric: metric,
+                            value: report.score[r]
+                        }
+                    )
+                })
+            }
+
         }
     })
     const filteredVendors =
@@ -56,8 +92,8 @@ function PERFORM() {
                 : ''
 
     // Report Types (Section 2)
-    const [reportTypeSelected, setReportTypeSelected] = useState<string>(TYPE_OF_REPORTS[0])
-    const [reportDate, setReportDate] = useState<Date>(() => new Date())
+    const [reportTypeSelected, setReportTypeSelected] = useState<string>(report?.reportType ? report.reportType.replace(/_/g, ' ') : TYPE_OF_REPORTS[0])
+    const [reportDate, setReportDate] = useState<Date>(() => report?.reportDate ? report.reportDate : new Date())
 
     // Section 4
     const [performanceMetric, setPerformanceMetric] = useState<PERFORMANCE_METRICS_INTERFACE>(PERFORMANCE_METRICS)
@@ -66,7 +102,7 @@ function PERFORM() {
     }
 
     // Section 5
-    const [overallPerformance, setOverallPerformance] = useState<number>(1)
+    const [overallPerformance, setOverallPerformance] = useState<number>(report?.overallPerformance ? report.overallPerformance : 1)
 
     const handleSubmit = () => {
         if (!vendorSelected) return;
@@ -77,7 +113,7 @@ function PERFORM() {
 
         if (ta_3?.value === undefined || !ta_4?.value === undefined || ta_5?.value === undefined || ta_6?.value === undefined) return
 
-        const report = {
+        const updated_report = {
             vendorId: vendorSelected.id,
             reportType: reportTypeSelected,
             reportDate: reportDate,
@@ -87,9 +123,10 @@ function PERFORM() {
             overallPerformance: overallPerformance,
             objectivesFuture: ta_5.value,
             additionalNotes: ta_6.value,
+            id: report?.id ? report.id : ""
         }
 
-        mutate({ ...report }, {
+        mutate({ ...updated_report }, {
             onSuccess: (success) => {
                 if (success) router.push('/reports')
             }
@@ -260,7 +297,7 @@ function PERFORM() {
                 </div>
                 <div className='bg-[#DDD] border border-black border-t-1 w-full p-2'>
                     <div className='inputDiv'>
-                        <textarea id="tA-3" placeholder='Objectives that were reviewed...' className='w-full py-1 px-2 focus:outline-none'></textarea>
+                        <textarea id="tA-3" placeholder={report?.objectivesReviewed ? report?.objectivesReviewed : 'Objectives that were reviewed...'} className='w-full py-1 px-2 focus:outline-none'></textarea>
                     </div>
                 </div>
             </section>
@@ -327,7 +364,7 @@ function PERFORM() {
                     {/* Justification */}
                     <div className='bg-[#DDD] w-full h-full p-2 col-span-2 pt-4'>
                         <div className='inputDiv'>
-                            <textarea rows={9} id="tA-4" placeholder='Justification for performance evaluation...' className='w-full py-1 px-2 focus:outline-none'></textarea>
+                            <textarea rows={9} id="tA-4" placeholder={report?.justification ? report.justification : 'Justification for performance evaluation...'} className='w-full py-1 px-2 focus:outline-none'></textarea>
                         </div>
                     </div>
                 </div>
@@ -360,7 +397,7 @@ function PERFORM() {
                     </div>
                     <div className='bg-[#DDD] w-full h-full p-2 col-span-2'>
                         <div className='inputDiv'>
-                            <textarea id="tA-5" placeholder='Objectives that will be reviewed upon next PER...' className='w-full py-1 px-2 focus:outline-none'></textarea>
+                            <textarea id="tA-5" placeholder={report?.objectivesFuture ? report.objectivesFuture : 'Objectives that will be reviewed upon next PER...'} className='w-full py-1 px-2 focus:outline-none'></textarea>
                         </div>
                     </div>
                 </div>
@@ -373,17 +410,17 @@ function PERFORM() {
                 </div>
                 <div className='bg-[#DDD] w-full h-full p-2 col-span-2 border border-black border-t-1 border-b-2'>
                     <div className='inputDiv'>
-                        <textarea id="tA-6" placeholder='Additional notes from the review...' className='w-full py-1 px-2 focus:outline-none'></textarea>
+                        <textarea id="tA-6" placeholder={report?.additionalNotes ? report.additionalNotes : 'Additional notes from the review...'} className='w-full py-1 px-2 focus:outline-none'></textarea>
                     </div>
                 </div>
             </section>
 
             {/* Button to submit report */}
             <div className='flex mx-auto py-5'>
-                <button onClick={() => handleSubmit()} className='btn max-w-xs'>Submit Report</button>
+                <button onClick={() => handleSubmit()} className='btn max-w-xs'>Edit Report</button>
             </div>
         </section>
     )
 }
 
-export default PERFORM
+export default PEREditFORM

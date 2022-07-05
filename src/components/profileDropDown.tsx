@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { UserIcon, LogoutIcon, FolderOpenIcon } from '@heroicons/react/outline'
-import { Router, useRouter } from 'next/router'
+import { UserIcon, LogoutIcon } from '@heroicons/react/outline'
+import { useRouter } from 'next/router'
 import { trpc } from '../utils/trpc'
 
 function ProfileDropDown() {

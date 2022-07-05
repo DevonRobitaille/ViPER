@@ -100,6 +100,7 @@ model Report {
   supervisorId       String?
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
+  approvedAt         DateTime?
 
   score   Score  @relation(fields: [scoreId], references: [id])
   scoreId String
@@ -110,7 +111,7 @@ model Score {
   onTimeDelivery  Int
   cost            Int
   quality         Int
-  reponsiveness   Int
+  responsiveness  Int
   reliability     Int
   accountability  Int
   leadTime        Int
