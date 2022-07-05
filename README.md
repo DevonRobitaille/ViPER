@@ -67,6 +67,9 @@ ___
 <p>https://url.com/new</p>
 <img src='./imgs/New Report Page.png'/>
 <hr/>
+<p>https://url.com/reports</p>
+<img src='./imgs/Reports Page.png'/>
+<hr/>
 
 <br>
 
