@@ -4,10 +4,12 @@ import { MenuIcon } from '@heroicons/react/solid'
 import { UserIcon, LogoutIcon, FolderOpenIcon, CogIcon, DocumentReportIcon } from '@heroicons/react/outline'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import { trpc } from '../utils/trpc'
 
 function NavBarDropDown() {
     const router = useRouter()
     const user = useUserContext()
+    const { mutate } = trpc.useMutation(['users.logout'])
 
     return (
         <Menu as="div" className="relative inline-block text-left">
@@ -92,7 +94,10 @@ function NavBarDropDown() {
                                 <div className='NavButtons flex hover:text-black hover:cursor-pointer text-[#A0A0A0] hover:bg-gray-200 hover:border hover:rounded-lg hover:font-semibold py-0 px-2 m-0'>
                                     <LogoutIcon className='h-9 w-7' />
                                     <p
-                                        onClick={() => router.push('/logout')}
+                                        onClick={() => {
+                                            mutate()
+                                            router.reload()
+                                        }}
                                         className='flex flex-1 px-2 py-2 text-sm'
                                     >
                                         Sign Out

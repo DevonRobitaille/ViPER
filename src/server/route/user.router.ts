@@ -330,6 +330,18 @@ export const userRouter = createRouter()
             }
         }
     })
+    .mutation('logout', {
+        async resolve({ ctx }) {
+            /* remove cookies from request header */
+            ctx.res.setHeader('Set-Cookie', [
+                serialize('token', '', {
+                    maxAge: -1,
+                    path: '/'
+                })
+            ])
+            // ctx.res.writeHead(302, { Location: '/' })
+        }
+    })
     .query('verify-otp', {
         input: verifyOtpSchema,
         async resolve({ ctx, input }) {
