@@ -53,3 +53,47 @@ export const reportListSchema = z.object({
     updatedAt: z.date(),
 }).array()
 export type ReportListSchema = z.TypeOf<typeof reportListSchema>
+
+export const reportOutputSchema = z.object({
+    vendor: z.object({
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string().optional().nullable(),
+        job: z.object({
+            name: z.string()
+        }),
+        company: z.object({
+            name: z.string()
+        })
+    }),
+    evaluator: z.object({
+        firstName: z.string(),
+        lastName: z.string()
+    }),
+    supervisor: z.object({
+        firstName: z.string(),
+        lastName: z.string()
+    }).optional().nullable(),
+    updatedAt: z.date(),
+    createdAt: z.date(),
+    approvedAt: z.date().optional().nullable(),
+    reportType: z.string(),
+    reportDate: z.date(),
+    objectivesReviewed: z.string().optional(),
+    score: z.object({
+        onTimeDelivery: z.number(),
+        cost: z.number(),
+        quality: z.number(),
+        reponsiveness: z.number(),
+        reliability: z.number(),
+        accountability: z.number(),
+        leadTime: z.number(),
+        changeOrder: z.number(),
+        professionalism: z.number(),
+    }),
+    justification: z.string().optional(),
+    overallPerformance: z.number(),
+    objectivesFuture: z.string().optional(),
+    additionalNotes: z.string().optional()
+})
+export type ReportOutput = z.TypeOf<typeof reportOutputSchema>

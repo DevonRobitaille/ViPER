@@ -5,6 +5,7 @@ import { PAGE_SIZE } from '../../constants'
 import {
     createReportSchema,
     reportListSchema,
+    reportOutputSchema,
 } from '../../schema/report.schema'
 import { createRouter } from '../createRouter'
 
@@ -191,5 +192,46 @@ export const reportRouter = createRouter()
             })
 
             return reportList
+        }
+    })
+    .query('get-id', {
+        input: z.object({
+            id: z.string()
+        }),
+        output: reportOutputSchema,
+        async resolve({ ctx, input }) {
+            const { id } = input
+
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            const report = await ctx.prisma.report.findUnique({
+                where: {
+                    id
+                },
+                include: {
+                    vendor: {
+                        include: {
+                            job: true,
+                            company: true
+                        }
+                    },
+                    evaluator: true,
+                    supervisor: true,
+                    score: true
+                }
+            })
+
+            if (!report) throw new trpc.TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'Invalid id',
+            })
+
+            return report
         }
     })
