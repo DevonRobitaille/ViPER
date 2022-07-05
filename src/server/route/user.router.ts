@@ -207,6 +207,13 @@ export const userRouter = createRouter()
                 })
             }
 
+            if (!user.isActive) {
+                throw new trpc.TRPCError({
+                    code: 'UNAUTHORIZED',
+                    message: 'User account is not active',
+                })
+            }
+
             const token = await ctx.prisma.loginToken.create({
                 data: {
                     redirect,

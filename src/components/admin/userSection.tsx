@@ -49,8 +49,8 @@ function UserSection() {
                                 <div key={`user-${index}`} className='flex flex-col'>
                                     <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
                                         <div className='flex-1'>
-                                            <p className='text-sm'>{user.firstName + " " + user.lastName}<span className="text-[#FF0066]">{(user.role.name === 'Admin' ? "  (Admin)" : "")}</span></p>
-                                            <p className='text-xs'>{user.email}</p>
+                                            <p className={`text-sm ${!user.isActive ? "text-[#888]" : ""}`}>{user.firstName + " " + user.lastName}<span className="text-[#FF0066]">{(user.role.name === 'Admin' ? "  (Admin)" : "")}</span></p>
+                                            <p className={`text-sm ${!user.isActive ? "text-[#888]" : ""}`}>{user.email}</p>
                                         </div>
                                         <button onClick={() => {
                                             setEditUserDetails((prev) => prev = { ...prev, firstName: user.firstName, lastName: user.lastName, email: user.email })
