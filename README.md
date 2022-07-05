@@ -90,6 +90,7 @@ ___
 - [x] page: new report
 - [x] page: reports (all from everyone)
 - [x] page: report?id=... (show details of specific report)
+- [x] page: edit?id=... (allow to edit a specific report)
 - [ ] ZodError: format zod errors properly back to the client
 
 ### Quality of life improvements
