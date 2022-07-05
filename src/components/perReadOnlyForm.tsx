@@ -10,9 +10,13 @@ interface IProps {
 const PERViewOnlyFORM: NextPage<IProps> = (props) => {
     const { id } = props
     const router = useRouter()
-    const { data: report, error } = trpc.useQuery(['report.get-id', {
+    const { data: report, error, isLoading } = trpc.useQuery(['report.get-id', {
         id: id
     }])
+
+    if (error) router.push('/reports')
+
+    const { mutate } = trpc.useMutation(['report.approve'])
 
     return (
         <div className='flex w-full flex-col lg:flex-row'>
@@ -189,14 +193,16 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
                 <div className='mb-5'>
                     <p>Evaluator</p>
                     <hr className='h-[1px] w-full bg-[#888] mb-2' />
-                    <p className='text-sm text-[#888]'>{report?.evaluator && (report.evaluator.firstName + " " + report.evaluator.lastName)}</p>
+                    <p className='text-sm text-[#888] mb-1'>{report?.evaluator && (report.evaluator.firstName + " " + report.evaluator.lastName)}</p>
+                    <p className='text-xs text-[#888]'>{report?.createdAt ? format(report.createdAt, "dd MMMM, yyyy") : ""}</p>
                 </div>
 
                 {/* Supervisor */}
                 <div className='mb-5'>
                     <p>Supervisor Approval</p>
                     <hr className='h-[1px] w-full bg-[#888] mb-2' />
-                    <p className='text-sm text-[#888]'>{report?.supervisor ? (report.supervisor.firstName + " " + report.supervisor.lastName) : "Not Approved Yet."}</p>
+                    <p className='text-sm text-[#888] mb-1'>{report?.supervisor ? (report.supervisor.firstName + " " + report.supervisor.lastName) : "Not Approved Yet."}</p>
+                    <p className='text-xs text-[#888]'>{report?.approvedAt ? format(report.approvedAt, "dd MMMM, yyyy") : ""}</p>
                 </div>
 
                 {/* Last Updated */}
@@ -211,10 +217,13 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
 
                 {/* Buttons */}
                 <button className='btn mb-1'>Edit</button>
-                <button className={`btn mb-1 ${report?.approvedAt ? "hidden" : ""}`}>Approve</button>
+                <button onClick={() => {
+                    mutate({ id })
+                    router.reload()
+                }} className={`btn mb-1 ${report?.approvedAt ? "hidden" : ""}`}>Approve</button>
                 <button className='btn mb-1'>History</button>
             </div >
-        </div>
+        </div >
     )
 }
 

@@ -162,6 +162,58 @@ export const reportRouter = createRouter()
             }
         }
     })
+    .mutation('approve', {
+        input: z.object({
+            id: z.string()
+        }),
+        async resolve({ ctx, input }) {
+            const { id } = input
+
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            try {
+
+                const report = await ctx.prisma.report.update({
+                    where: {
+                        id
+                    },
+                    data: {
+                        approvedAt: new Date(),
+                        supervisorId: ctx.user.id
+                    }
+                })
+
+                return true
+            } catch (e) {
+                if (e instanceof PrismaClientKnownRequestError) {
+                    if (e.code === 'P2002') {
+                        throw new trpc.TRPCError({
+                            code: 'CONFLICT',
+                            message: 'Report already exists',
+                        })
+                    }
+                }
+
+                if (e instanceof Error) {
+                    throw new trpc.TRPCError({
+                        code: 'INTERNAL_SERVER_ERROR',
+                        message: e.message,
+                    })
+                }
+
+                throw new trpc.TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong',
+                })
+            }
+        }
+    })
     .query('all', {
         output: reportListSchema,
         async resolve({ ctx }) {

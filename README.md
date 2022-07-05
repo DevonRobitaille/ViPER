@@ -97,3 +97,4 @@ ___
 - [ ] page: analytics (allow to see the performance by either company or vendors by a graph?)
 - [ ] page: admin (allow to filter content, i.e., vendor can be filtered by job title or company)
 - [ ] page: admin (Complete logo upload section)
+- [ ] Archive / History (created a way to make a history of changes to a report)
