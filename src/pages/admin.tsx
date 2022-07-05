@@ -38,29 +38,6 @@ export function AdminPage() {
                 {/* Vendor Section */}
                 <VendorSection />
 
-                {/* Reports Section */}
-                <section className='flex-col mb-4 md:mb-0'>
-                    <button className='btn text-lg flex items-start ml-0 pl-0 font-semibold bg-white text-[#A0A0A0] mt-[2px] border-none mb-3 hover:bg-white hover:cursor-default'>Manage Reports</button>
-                    <div className='border-2 b-[#A0A0A0] overflow-auto'>
-                        {/*reportList.map((report, index) => {
-                            return (
-                                <div key={`reports-${index}`} className='flex flex-col'>
-                                    <div className='flex flex-row ml-2 mt-2 mr-2 items-center'>
-                                        <div className='flex-1'>
-                                            <p className='text-sm'>test</p>
-                                        </div>
-                                        <button className='btn flex items-center h-5 justify-center w-20 text-xs'>Disable</button>
-                                    </div>
-                                    <hr className='h-0.5 bg-[#DDD] m-2' />
-                                </div>
-                            )
-                        })*/}
-                    </div>
-                </section>
-
-                {/* Filler */}
-                <div className="col-span-1 h-0 p-0 m-0" />
-
                 {/* Logo */}
                 <section className='flex-col col-span-1'>
                     <h2 className='font-semibold text-lg mb-4'>Change Logo</h2>
