@@ -77,9 +77,9 @@ function Reports() {
 
             {/* Page Selector */}
             <div className='flex flex-row mx-auto h-40 z-50 items-center'>
-                <button className='btn uppercase h-10 mx-5 w-[125px]' onClick={() => updatePage(-1)}>Previous</button>
-                <p className='items-center text-[#FF0066] font-semibold'>{"Page " + ((skip / PAGE_SIZE) + 1)}</p>
-                <button className='btn uppercase h-10 mx-5 w-[125px]' onClick={() => updatePage(1)}>Next</button>
+                <button disabled={skip === 0} className='btn uppercase h-10 mx-5 w-[125px] disabled:hidden' onClick={() => updatePage(-1)}>Previous</button>
+                <p className={`items-center text-[#FF0066] font-semibold ${maxPage <= PAGE_SIZE ? "hidden" : ""}`}>{"Page " + ((skip / PAGE_SIZE) + 1)}</p>
+                <button disabled={skip + PAGE_SIZE >= maxPage} className='btn uppercase h-10 mx-5 w-[125px] disabled:hidden' onClick={() => updatePage(1)}>Next</button>
             </div>
 
         </section>
