@@ -85,8 +85,12 @@ ___
 - [x] page: navbar
 - [x] page: admin (Section, Add & Edit Modals, Disable button)
 - [x] page: new report
-- [ ] page: reports (all from everyone)
-- [ ] page: admin (Complete reports section && logo upload section)
-- [ ] page: reports (created by logged in user)
+- [x] page: reports (all from everyone)
+- [ ] page: admin (Complete logo upload section)
+- [ ] page: report?id=... (show details of specific report)
 - [ ] ZodError: format zod errors properly back to the client
+
+### Quality of life improvements
+- [ ] page: reports (allow to filter reports)
+- [ ] page: analytics (allow to see the performance by either company or vendors by a graph?)
 - [ ] page: admin (allow to filter content, i.e., vendor can be filtered by job title or company)
