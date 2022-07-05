@@ -1,20 +1,51 @@
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { PAGE_SIZE } from '../constants'
+import { ReportListSchema } from '../schema/report.schema'
 import { trpc } from '../utils/trpc'
 
 function Reports() {
     const router = useRouter()
-    const { data, error } = trpc.useQuery(['report.all'])
+    const { mutate } = trpc.useMutation(['report.pagination'])
+    const [skip, setSkip] = useState<number>(0)
+    const [maxPage, setMaxPage] = useState<number>(3)
+    const [reportList, setReportList] = useState<ReportListSchema>([])
+
+    const updatePage = (change: number) => {
+        change *= PAGE_SIZE;
+        change = skip + change < 0 // less than zero
+            ? -skip
+            : skip + change >= maxPage // greater than max
+                ? 0
+                : change
+
+        if (skip + change === skip) return;
+        if (skip + change >= maxPage) return;
+
+        mutate({ skip: skip + change }, {
+            onSuccess: (result) => {
+                setReportList((prev) => prev = result?.reportList ? result.reportList : [])
+                setMaxPage((prev) => prev = result?.maxSize ? result.maxSize : 0)
+            }
+        })
+
+        setSkip((prev) => prev += change)
+    }
+
+    useEffect(() => {
+        mutate({ skip }, {
+            onSuccess: (result) => {
+                setReportList((prev) => prev = result?.reportList ? result.reportList : [])
+                setMaxPage((prev) => prev = result?.maxSize ? result.maxSize : 0)
+            }
+        })
+    }, [])
 
     return (
-        <section className='w-full h-screen flex flex-col md:flex-row'>
-            {/* Search Bar */}
-            <div className='mx-5 my-2'>
-                filter
-            </div>
+        <section className='w-full h-screen flex flex-col'>
             {/* Report List */}
-            <div className='flex-1 ml-5 md:ml-0 mr-5 my-2'>
+            <div className='mb-auto mt-10'>
                 <table className='table-auto min-w-full'>
                     <thead className='border-b-2 border-[#CCC]'>
                         <th className='font-normal text-[#888]'>Vendor</th>
@@ -24,7 +55,7 @@ function Reports() {
                         <th className='font-normal text-[#888]'>Updated On</th>
                     </thead>
                     <tbody>
-                        {data && data.map((report, index) => {
+                        {reportList && reportList.map((report, index) => {
                             return (
                                 <tr key={report.id} className="hover:cursor-pointer border-b-[1px] border-[#CCC]" onClick={() => router.push({ pathname: '/report', query: { id: report.id } })}>
                                     <td className='text-sm text-center'>
@@ -40,10 +71,17 @@ function Reports() {
                                 </tr>
                             )
                         })}
-
                     </tbody>
                 </table>
             </div>
+
+            {/* Page Selector */}
+            <div className='flex flex-row mx-auto h-40 z-50 items-center'>
+                <button className='btn uppercase h-10 mx-5 w-[125px]' onClick={() => updatePage(-1)}>Previous</button>
+                <p className='items-center text-[#FF0066] font-semibold'>{"Page " + ((skip / PAGE_SIZE) + 1)}</p>
+                <button className='btn uppercase h-10 mx-5 w-[125px]' onClick={() => updatePage(1)}>Next</button>
+            </div>
+
         </section>
     )
 }
