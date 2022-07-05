@@ -16,7 +16,7 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
 
     return (
         <div className='flex w-full flex-col lg:flex-row'>
-            <section className="lg:mx-5 mt-10 mx-auto">
+            <section className="lg:mx-5 my-10 mx-auto">
                 {/* SECTION 1: IDENTIFICATION */}
                 <section>
                     <div className="px-2 border rounded-none border-t-2 border-black">
@@ -184,7 +184,7 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
             </section>
 
             {/* Additional Details */}
-            <div className='my-8 flex flex-col mx-auto pr-5 w-[200px]'>
+            <div className='my-9 flex flex-col mx-auto pr-5 w-[200px]'>
                 {/* Evaluator */}
                 <div className='mb-5'>
                     <p>Evaluator</p>
@@ -207,7 +207,7 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
                 </div>
 
                 {/* What changed */}
-                <div className='my-10' />
+                <div className='my-10 flex-1' />
 
                 {/* Buttons */}
                 <button className='btn mb-1'>Edit</button>
