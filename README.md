@@ -89,7 +89,7 @@ ___
 - [x] page: admin (Section, Add & Edit Modals, Disable button)
 - [x] page: new report
 - [x] page: reports (all from everyone)
-- [ ] page: report?id=... (show details of specific report)
+- [x] page: report?id=... (show details of specific report)
 - [ ] ZodError: format zod errors properly back to the client
 
 ### Quality of life improvements
