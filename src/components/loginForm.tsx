@@ -20,7 +20,7 @@ function VerifyToken({ hash }: { hash: string }) {
         return <p>Verifying...</p>
     }
 
-    router.push(data?.redirect.includes('login') ? '/' : data?.redirect || '/')
+    if (!isLoading) router.push('/reports')
 
     return <p>Redirecting...</p>
 }

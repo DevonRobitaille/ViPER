@@ -1,8 +1,10 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import * as trpc from '@trpc/server'
 import { z } from 'zod'
+import { PAGE_SIZE } from '../../constants'
 import {
     createReportSchema,
+    reportListSchema,
 } from '../../schema/report.schema'
 import { createRouter } from '../createRouter'
 
@@ -117,4 +119,77 @@ export const reportRouter = createRouter()
                 })
             }
         },
+    })
+    .mutation('pagination', {
+        input: z.object({
+            skip: z.number()
+        }),
+        output: z.object({
+            reportList: reportListSchema,
+            maxSize: z.number()
+        }).nullable(),
+        async resolve({ ctx, input }) {
+            const { skip } = input;
+
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            const maxSize = await ctx.prisma.report.count()
+            const reportList = await ctx.prisma.report.findMany({
+                include: {
+                    evaluator: true,
+                    supervisor: true,
+                    vendor: {
+                        include: {
+                            job: true,
+                            company: true
+                        }
+                    }
+                },
+                skip: skip ? skip : 0,
+                take: PAGE_SIZE,
+            })
+
+            return {
+                reportList: reportList,
+                maxSize: maxSize
+            }
+        }
+    })
+    .query('all', {
+        output: reportListSchema,
+        async resolve({ ctx }) {
+            // User has to be signed in
+            if (!ctx.user) {
+                throw new trpc.TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'Invalid token',
+                })
+            }
+
+            const reportList = await ctx.prisma.report.findMany({
+                include: {
+                    evaluator: true,
+                    supervisor: true,
+                    vendor: {
+                        include: {
+                            job: true,
+                            company: true
+                        }
+                    }
+                }
+            })
+
+            if (!reportList) throw new trpc.TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'Something went wrong',
+            })
+
+            return reportList
+        }
     })

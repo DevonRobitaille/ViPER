@@ -92,9 +92,11 @@ function PERFORM() {
             additionalNotes: ta_6.value,
         }
 
-        console.log(report)
-        const success = mutate({ ...report })
-        if (success) router.push('/reports')
+        mutate({ ...report }, {
+            onSuccess: (success) => {
+                if (success) router.push('/reports')
+            }
+        })
     }
 
     return (
