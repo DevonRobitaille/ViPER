@@ -16,7 +16,7 @@ const PERViewOnlyFORM: NextPage<IProps> = (props) => {
 
     return (
         <div className='flex w-full flex-col lg:flex-row'>
-            <section className="lg:mx-5 my-10 mx-auto">
+            <section className="lg:mx-5 w-full my-10 mx-auto">
                 {/* SECTION 1: IDENTIFICATION */}
                 <section>
                     <div className="px-2 border rounded-none border-t-2 border-black">

@@ -70,6 +70,9 @@ ___
 <p>https://url.com/reports</p>
 <img src='./imgs/Reports Page.png'/>
 <hr/>
+<p>https://url.com/report?id=...</p>
+<img src='./imgs/Individual Report Page.png'/>
+<hr/>
 
 <br>
 
